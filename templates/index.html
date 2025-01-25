@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PULIAMPATTI ROTARY - MARATHON E-CERTIFICATE GENERATOR</title>
+    <style>
+        /* Base Styles */
+        @font-face {
+            font-family: 'Racing Sans One';
+            src: url('RacingSansOne-Regular.ttf') format('truetype');
+        }
+    
+        body {
+            font-family: 'Racing Sans One', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh; /* Full height */
+            width: 100vw; /* Full width */
+            background: url('static/hello.jpeg') no-repeat center center/cover;
+            overflow: hidden; /* Prevent scrolling */
+        }
+    
+        h1 {
+            font-size: 24px;
+            margin-bottom: 20px;
+            text-align: center;
+            color: #FF5722;
+            text-transform: uppercase;
+        }
+    
+        .form-container {
+            margin-left: -10px; /* Slight adjustment for centering */
+            border-radius: 12px;
+            width: 90%; /* Slightly smaller width */
+            max-width: 300px; /* Smaller maximum width */
+            padding: 10px; /* Reduced padding */
+            text-align: center;
+            margin-top: 160px; /* Adjust spacing from top */
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px; /* Adjusted spacing */
+            font-size: 14px; /* Slightly smaller font */
+            text-align: left;
+            color: #555;
+        }
+
+        input[type="text"], input[type="file"] {
+            width: 100%;
+            padding: 8px; /* Reduced padding for inputs */
+            margin-bottom: 15px; /* Adjust spacing */
+            border: 1px solid #ddd;
+            border-radius: 40px; /* Adjusted for a smaller circular appearance */
+            font-size: 14px; /* Smaller font size */
+            outline: none;
+        }
+
+        input[type="text"]:focus, input[type="file"]:focus {
+            border-color: #FF5722;
+            box-shadow: 0 0 6px rgba(255, 87, 34, 0.4); /* Subtle focus effect */
+        }
+
+        button {
+            background: #FF5722;
+            border: none;
+            border-radius: 6px;
+            color: #fff;
+            font-size: 14px; /* Smaller font size */
+            padding: 8px 15px; /* Reduced padding for a compact button */
+            cursor: pointer;
+            transition: background 0.3s ease, transform 0.2s ease;
+            width: 100%; /* Full width button */
+        }
+
+        button:hover {
+            background: #E64A19;
+            transform: scale(1.05);
+        }
+
+        button:active {
+            background: #FF5722;
+            transform: scale(0.95);
+        }
+    
+        /* Modal Styles */
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000; /* Make it appear above all other content */
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8); /* Dark overlay for the background */
+            overflow: auto; /* Allow scrolling for large content */
+            justify-content: center; /* Center the content horizontally */
+            align-items: center; /* Center the content vertically */
+        }
+
+        /* Modal Content */
+        .modal-content {
+            background-color: #fff;
+            border-radius: 12px;
+            padding: 20px;
+            width: 90%;
+            max-width: 500px; /* Limit the width of the modal */
+            text-align: center;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+            position: relative;
+        }
+
+        /* Close Button */
+        .close {
+            position: absolute;
+            top: 10px;
+            right: 20px;
+            color: #aaa;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+        }
+
+        /* Crop Container */
+        .crop-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            height: auto;
+            background: rgba(0, 0, 0, 0.8); /* Darker area for cropping */
+        }
+
+        .crop-container img {
+            max-width: 100%;
+            max-height: 400px;
+            display: block;
+            margin: auto;
+        }
+        /* Preview Styles */
+        .certificate-box {
+            width: 100%;
+            height: 150px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            background-color: #f9f9f9;
+            border: 1px dashed #ddd;
+            border-radius: 5px;
+        }
+
+        .certificate-image {
+            width: auto;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        .note {
+            font-size: 14px;
+            color: #555;
+            text-align: left;
+            margin-bottom: 10px;
+        }
+
+        .note .warning {
+            color: red;
+            font-weight: bold;
+        }
+
+        /* Sponsors Section */
+        .sponsors {
+            margin-top: 20px;
+            width: 100%;
+            height: 50px;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+        }
+
+        .sponsor-box {
+            width: 190px;
+            height: 50px;
+            margin: 0 10px;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .sponsor-box img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .sponsors-marquee {
+            display: flex;
+            animation: sponsorScroll 10s linear infinite;
+        }
+
+        @keyframes sponsorScroll {
+            0% {
+                transform: translateX(0);
+            }
+            100% {
+                transform: translateX(-100%);
+            }
+        }
+
+        /* Responsive Adjustments */
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 18px;
+            }
+
+            .form-container {
+                padding: 15px;
+            }
+        }
+
+        /* Hide second page by default */
+        .page {
+            display: none;
+        }
+
+        .page.active {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <div class="form-container">
+        
+    
+        <form id="multiStepForm" method="post" action="/generate_certificate" enctype="multipart/form-data">
+            <!-- First Page: Chest Card Number -->
+            <div class="page active" id="page1">
+                <div class="heading" style="color: rgb(234, 64, 45); font-weight: 900; margin-bottom: 10px; margin-top: 30px;">Welcome!</div> <!-- Moved Welcome! lower -->
+                <div class="heading" style="color: rgb(234, 64, 45); font-weight: 900; margin-bottom: 20px;">Generate Your E-Certificate</div>
+                <div class="input-group" style="margin-left: 10px; margin-bottom: 0; padding-bottom: 0;">
+                    <label for="chest_card_number" style="margin-left: -10px;">Chest Card Number:</label> <!-- Move label more to the left -->
+                    <input type="text" name="chest_card_number" id="chest_card_number" placeholder="Enter Chest Card Number" required style="margin-left: -20px;">
+                </div>
+                <div class="note" style="margin-left: -30px; margin-top: -15px; padding-top: 0;"> <!-- Move points closer -->
+                    <ul>
+                        <li>Supported formats typically include JPEG, PNG.</li>
+                        <li>Upload a clear image for the best results.</li>
+                        <li class="warning">Please enter the correct chest card number.</li>
+                    </ul>
+                </div>
+                <button type="button" onclick="nextPage(1)">Next</button>
+                
+            </div>
+    
+            <!-- Second Page: Upload Photo and Crop -->
+            <div class="page" id="page2">
+                <div class="heading" style="color: rgb(234, 64, 45); font-weight: 900; margin-bottom: 10px; margin-top: 30px;">Upload Your Picture</div> <!-- Moved Welcome! lower -->
+                <div class="input-group">
+                    <label for="photo">Upload Photo:</label>
+                    <input type="file" name="photo" id="photo" accept="image/*" onchange="previewImage()" required>
+                </div>
+                <div class="note">
+                    <ul>
+                        <li class="warning">Accepted formats: JPG, PNG.</li>
+                    </ul>
+                </div>
+    
+                <!-- Modal for Crop Feature -->
+                <div id="cropModal" class="modal">
+                    <div class="modal-content">
+                        <span id="closeModal" class="close">&times;</span>
+                        <h2>Crop Your Image</h2>
+                        <div class="crop-container">
+                            <img id="cropImage" alt="Uploaded Photo">
+                        </div>
+                        <button type="button" id="saveCropButton">Save Crop</button>
+                    </div>
+                </div>
+    
+                <button type="submit">Generate Certificate</button>
+                
+            </div>
+        </form>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/cropperjs"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/cropperjs/dist/cropper.css">
+
+    <script>
+        let currentPage = 1;
+        let cropper;
+
+        // Function to navigate between pages
+        function nextPage(pageNumber) {
+            if (pageNumber === 1) {
+                const chestCardNumber = document.getElementById("chest_card_number").value;
+                
+                if (chestCardNumber.trim() !== "") {
+                    document.getElementById("page1").classList.remove("active");
+                    document.getElementById("page2").classList.add("active");
+                    document.getElementById("greeting").textContent = `HII! ${name}`;
+                } else {
+                    alert("Please enter a valid Chest Card Number.");
+                }
+            }
+        }
+
+        const photoInput = document.getElementById('photo');
+        const cropModal = document.getElementById('cropModal');
+        const closeModal = document.getElementById('closeModal');
+        const cropImage = document.getElementById('cropImage');
+        const saveCropButton = document.getElementById('saveCropButton');
+
+        // Open modal when image is selected
+        photoInput.addEventListener('change', (event) => {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    cropImage.src = e.target.result;
+                    cropModal.style.display = 'block';
+
+                    // Initialize Cropper.js
+                    if (cropper) cropper.destroy();
+                    cropper = new Cropper(cropImage, {
+                        aspectRatio: 1, // 1:1 crop
+                        viewMode: 1,
+                    });
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+
+        // Close modal
+        closeModal.addEventListener('click', () => {
+            cropModal.style.display = 'none';
+            if (cropper) {
+                cropper.destroy();
+                cropper = null;
+            }
+        });
+
+        // Save cropped image
+        saveCropButton.addEventListener('click', () => {
+            if (!cropper) {
+                alert('Please upload an image first.');
+                return;
+            }
+
+            const canvas = cropper.getCroppedCanvas();
+            canvas.toBlob((blob) => {
+                const croppedFile = new File([blob], 'cropped_image.png', { type: 'image/png' });
+
+                // Replace uploaded file with cropped one
+                const dataTransfer = new DataTransfer();
+                dataTransfer.items.add(croppedFile);
+                photoInput.files = dataTransfer.files;
+
+                // Close modal and submit the form
+                cropModal.style.display = 'none';
+            });
+        });
+    </script>
+</body>
+</html>

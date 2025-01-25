@@ -1,0 +1,11 @@
+__pycache__/
+*.pyc
+*.pyo
+*.db
+env/
+venv/
+uploads/
+static/certificates/
+static/cropped/
+static/generated/
+instance/
