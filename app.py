@@ -118,5 +118,5 @@ def download_certificate(filename):
     return send_from_directory(app.config['GENERATED_FOLDER'], filename, as_attachment=True)
 
 if __name__ == '__main__':
-    app.run(debug=True, port=8000)
+    app.run()
 
